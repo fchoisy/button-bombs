@@ -46,7 +46,9 @@ function Game() {
                     bomb.tick();
                 }
                 // add a new bomb
-                for (let i = 0; i < (score/4 + 1); i++) {
+                const LOG_BASE = 3;
+                let newBombsCount = Math.floor(Math.log(score + LOG_BASE) / Math.log(LOG_BASE))
+                for (let i = 0; i < newBombsCount; i++) {
                     addBomb();
                 }
                 lastTime = tFrame;
