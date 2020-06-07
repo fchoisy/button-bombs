@@ -1,72 +1,75 @@
-var canvas = document.getElementById('canvas');
-var lost = false;
+/**
+ * Main game script
+ */
 
-var incrementScore = (function() {
+// Requires ./Bomb.js
+
+function Game() {
+
+    var isLost = false;
     var score = 0;
-    const scoreEl = document.getElementById('score');
-    return function() {
-        score++;
-        scoreEl.textContent = score;
+    
+    var incrementScore = (function () {
+        const scoreEl = document.getElementById('score');
+
+        return function () {
+            score++;
+            scoreEl.textContent = score;
+        }
+    })();
+    
+    function loose() {
+        isLost = true;
     }
-})();
 
-function Bomb(lifeTime, parent) {
-    this.lifeTime = lifeTime;
-
-    this.die = function () {
-        incrementScore();
-        this.element.parentNode.removeChild(this.element);
+    function init() {
+        var canvas = document.getElementById('canvas');
+        canvas.addEventListener('exploded', loose, true);
+        canvas.addEventListener('died', incrementScore, true);
     }
     
-    this.tick = function () {
-        this.lifeTime--;
-        if (this.lifeTime <= 0) {
-            lost = true;
-        } else {
-            this.element.textContent = this.lifeTime;
+    var update = (function () {
+        var canvas = document.getElementById('canvas');
+        var lastTime = window.performance.now();
+
+        function addBomb() {
+            var newLifetime = 2 + Math.floor(Math.random() * 4);
+            var newBomb = new Bomb(newLifetime);
+            canvas.appendChild(newBomb.element);
         }
-    }
 
-    this.element = document.createElement('button');
-    this.element.classList.add('bomb');
-    this.element.textContent = this.lifeTime;
-    this.element.tick = this.tick.bind(this);
-    this.element.addEventListener('click', this.die.bind(this));
+        return function (tFrame) {
+            var elapsedSeconds =  Math.floor((tFrame - lastTime) / 1000);
+            for (let second = 0; second < elapsedSeconds; second++) {
+                // update all bombs
+                for (bomb of canvas.children) {
+                    bomb.tick();
+                }
+                // add a new bomb
+                for (let i = 0; i < (score/4 + 1); i++) {
+                    addBomb();
+                }
+                lastTime = tFrame;
+            }
+        }
+    })();
 
-    this.element.style.left = Math.trunc(Math.random() * 100) + "px";
-    this.element.style.top = Math.trunc(Math.random() * 100) + "%";
+    // Game loop
+    this.main = function () {
+        init();
 
-    parent.appendChild(this.element);
+        function loop(tFrame) {
+            if (isLost) {
+                document.getElementById('you-loose').style.display = 'block';
+            } else {
+                window.requestAnimationFrame(loop);
+                update(tFrame);
+            }
+        }
+
+        window.requestAnimationFrame(loop);
+    };
 }
 
-var update = (function () {
-    var lastTime = window.performance.now(); // static var
-
-    return function(tFrame) {
-        // every second
-        if (tFrame - lastTime > 1000) {
-            // update all bombs
-            for (bomb of canvas.children) {
-                bomb.tick();
-            }
-            // add a new bomb
-            new Bomb(3, canvas);
-            lastTime = tFrame;
-        }
-    }
-})();
-
-
-// Game loop
-;(function () {
-    function loop(tFrame) {
-        if (lost) {
-            document.getElementById('you-loose').style.display = 'block';
-        } else {
-            window.requestAnimationFrame(loop);
-            update(tFrame);
-        }
-    }
-
-    window.requestAnimationFrame(loop);
-})();
+const game = new Game();
+game.main();
