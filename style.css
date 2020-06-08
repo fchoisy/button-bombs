@@ -10,7 +10,6 @@ body {
     box-sizing: inherit;
 }
 
-
 #container {
     position: relative;
     width: 600px;
@@ -21,19 +20,21 @@ body {
 
 #you-loose {
     display: none;
-    position: relative;
+    position: absolute;
     z-index: 10;
+    height: 100%;
+    width: 100%;
     background-color: rgba(155, 0, 0, 0.3);
     text-align: center;
-    height: 100%;
     font-weight: 900;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 #canvas {
-    z-index: 0;
-    width: 70%;
-    height: 70%;
+    position: absolute;
+    height: calc(100% - 50px);
+    width: calc(100% - 50px);
+    /* margin: 0px 50px 50px 0px; */
 }
 
 .bomb {
@@ -44,4 +45,9 @@ body {
     font-size: 20px;
     font-weight: 900;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.exploded {
+    background-color: black;
+    color: white;
 }
