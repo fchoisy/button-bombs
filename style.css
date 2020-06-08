@@ -4,6 +4,8 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    text-align: center;
 }
 
 *, *::before, *::after {
@@ -19,22 +21,32 @@ body {
 }
 
 #you-loose {
-    display: none;
+    visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     position: absolute;
     z-index: 10;
     height: 100%;
     width: 100%;
     background-color: rgba(155, 0, 0, 0.3);
-    text-align: center;
+    color: white;
+    font-size: 3rem;
     font-weight: 900;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.play-again {
+    height: 50px;
+    width: 100px;
+    border-radius: 10%;
+    font-weight: 500;
+    font-size: 1rem;
 }
 
 #canvas {
     position: absolute;
     height: calc(100% - 50px);
     width: calc(100% - 50px);
-    /* margin: 0px 50px 50px 0px; */
 }
 
 .bomb {
@@ -44,7 +56,6 @@ body {
     width: 50px;
     font-size: 20px;
     font-weight: 900;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 .exploded {

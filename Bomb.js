@@ -3,12 +3,12 @@ function Bomb(lifeTime) {
     this.lifeTime = lifeTime;
 
     this.die = function() {
-        this.element.dispatchEvent(new Event('died'))
+        this.element.dispatchEvent(new Event('died'));
         this.element.parentNode.removeChild(this.element);
     }
 
     this.explode = function() {
-        this.element.classList.add('exploded')
+        this.element.classList.add('exploded');
         this.element.dispatchEvent(new Event('exploded'));
     }
     

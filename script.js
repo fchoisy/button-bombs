@@ -62,7 +62,8 @@ function Game() {
 
         function loop(tFrame) {
             if (isLost) {
-                document.getElementById('you-loose').style.display = 'block';
+                let youLooseScreen = document.getElementById('you-loose');
+                youLooseScreen.style.visibility = 'visible';
             } else {
                 window.requestAnimationFrame(loop);
                 update(tFrame);
